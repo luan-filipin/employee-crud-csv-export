@@ -14,7 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "postgres")
+@Table(name = "employee")
 public class Employee {
 	
 	@Id
