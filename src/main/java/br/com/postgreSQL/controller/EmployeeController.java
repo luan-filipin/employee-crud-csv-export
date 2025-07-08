@@ -1,5 +1,7 @@
 package br.com.postgreSQL.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,42 +26,50 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api")
 public class EmployeeController {
-	
+
 	private final EmployeeService employeeService;
 
+	// Create employee.
 	@PostMapping("/employee")
-	public ResponseEntity<EmployeeDto> createEmployee(@RequestBody @Valid EmployeeDto employeeDto){
+	public ResponseEntity<EmployeeDto> createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
 		EmployeeDto employeeCreate = employeeService.createEmployee(employeeDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(employeeCreate);
 	}
-	
+
+	// Create list employee.
+	@PostMapping("/employees")
+	public ResponseEntity<List<EmployeeDto>> createEmployees(@RequestBody @Valid List<EmployeeDto> listDto) {
+		List<EmployeeDto> employees = employeeService.createListEmployee(listDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(employees);
+	}
+
+	// Find employee by document.
 	@GetMapping("/employee/{document}")
-	public ResponseEntity<EmployeeDto> findEmployeeByDocument(@PathVariable String document){
+	public ResponseEntity<EmployeeDto> findEmployeeByDocument(@PathVariable String document) {
 		EmployeeDto employeeByDocument = employeeService.findEmployeeByDocument(document);
 		return ResponseEntity.ok().body(employeeByDocument);
 	}
-	
+
+	// Find all employees.
 	@GetMapping("/employee")
 	public ResponseEntity<Page<EmployeeDto>> findAllEmployees(
-			@PageableDefault(page = 0, size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable){
+			@PageableDefault(page = 0, size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
 		return ResponseEntity.ok(employeeService.findAllEmployees(pageable));
 	}
-	
+
+	// Delete employee by document.
 	@DeleteMapping("/employee/{document}")
-	public ResponseEntity<Void> deleteEmployeeByDocument(@PathVariable String document){
+	public ResponseEntity<Void> deleteEmployeeByDocument(@PathVariable String document) {
 		employeeService.deleteEmployeeByDocument(document);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-	
+
+	// Update employee by document.
 	@PutMapping("/employee/{document}")
-	public ResponseEntity<EmployeeDto> updateEmployeeByDocument(@PathVariable String document, @RequestBody @Valid EmployeeDto employeeDto){
+	public ResponseEntity<EmployeeDto> updateEmployeeByDocument(@PathVariable String document,
+			@RequestBody @Valid EmployeeDto employeeDto) {
 		EmployeeDto updateEmployee = employeeService.updateEmployeeByDocument(document, employeeDto);
 		return ResponseEntity.ok().body(updateEmployee);
 	}
-	
+
 }
-
-
-
-
-

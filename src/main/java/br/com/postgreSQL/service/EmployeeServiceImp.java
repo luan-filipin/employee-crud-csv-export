@@ -1,5 +1,8 @@
 package br.com.postgreSQL.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +13,7 @@ import br.com.postgreSQL.mapper.EmployeeMapper;
 import br.com.postgreSQL.model.Employee;
 import br.com.postgreSQL.repository.EmployeeRepository;
 import br.com.postgreSQL.service.validator.EmployeeValidator;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +34,19 @@ public class EmployeeServiceImp implements EmployeeService {
 	}
 
 	@Override
+	public List<EmployeeDto> createListEmployee(List<EmployeeDto> listDto) {
+		
+		List<Employee> employees = listDto.stream()
+				.peek(dto -> employeeValidator.validateDocumentNotExists(dto.document()))
+				.map(employeeMapper::toEntity)
+				.collect(Collectors.toList());
+
+		List<Employee> saved = employeeRepository.saveAll(employees);
+
+		return saved.stream().map(employeeMapper::toDto).collect(Collectors.toList());
+	}
+
+	@Override
 	public EmployeeDto findEmployeeByDocument(String document) {
 		employeeValidator.validateDocumentExists(document);
 		Employee employee = employeeRepository.findByDocument(document);
@@ -42,10 +59,11 @@ public class EmployeeServiceImp implements EmployeeService {
 		return employeePage.map(employeeMapper::toDto);
 	}
 
+	@Transactional
 	@Override
 	public void deleteEmployeeByDocument(String document) {
 		employeeValidator.validateDocumentExists(document);
-		employeeRepository.deleteAllByDocument(document);
+		employeeRepository.deleteByDocument(document);
 	}
 
 	@Override

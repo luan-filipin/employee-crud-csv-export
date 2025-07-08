@@ -10,5 +10,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	Employee findByDocument(String document);
 		
-	void deleteAllByDocument(String document);
+	void deleteByDocument(String document); 
 }
