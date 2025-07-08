@@ -71,5 +71,4 @@ public class EmployeeController {
 		EmployeeDto updateEmployee = employeeService.updateEmployeeByDocument(document, employeeDto);
 		return ResponseEntity.ok().body(updateEmployee);
 	}
-
 }
