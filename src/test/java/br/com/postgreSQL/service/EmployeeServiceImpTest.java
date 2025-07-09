@@ -290,4 +290,34 @@ public class EmployeeServiceImpTest {
 		verify(employeeMapper, never()).toDto(any());
 	}
 	
+	@Test
+	public void shouldDeleteEmployeeByDocumentWithSuccessfully() {
+		
+		String document = "11111111111";
+		
+		doNothing().when(employeeValidator).validateDocumentExists(document);
+		doNothing().when(employeeRepository).deleteByDocument(document);
+		
+		employeeServiceImp.deleteEmployeeByDocument(document);
+		
+		verify(employeeValidator).validateDocumentExists(document);
+		verify(employeeRepository).deleteByDocument(document);
+		
+	}
+	
+	@Test
+	public void shouldThrowException_whenDocumentDoesNotExist_onDelete() {
+		
+		String document = "000000000000";
+		
+		doThrow(new DocumentNotFoundException()).when(employeeValidator).validateDocumentExists(doument);
+		
+		assertThrows(DocumentNotFoundException.class, ()->{
+			employeeServiceImp.deleteEmployeeByDocument(document);
+		});
+		
+		verify(employeeRepository, never()).deleteByDocument(any());
+		
+		
+	}	
 }
