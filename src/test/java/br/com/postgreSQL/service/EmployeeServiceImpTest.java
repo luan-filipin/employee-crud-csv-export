@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import br.com.postgreSQL.model.enums.EmployeeGender;
 import br.com.postgreSQL.dto.EmployeeDto;
 import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
+import br.com.postgreSQL.exception.DocumentImmutableException;
 import br.com.postgreSQL.exception.DocumentNotFoundException;
 import br.com.postgreSQL.mapper.EmployeeMapper;
 import br.com.postgreSQL.model.Address;
@@ -310,7 +311,7 @@ public class EmployeeServiceImpTest {
 		
 		String document = "000000000000";
 		
-		doThrow(new DocumentNotFoundException()).when(employeeValidator).validateDocumentExists(doument);
+		doThrow(new DocumentNotFoundException()).when(employeeValidator).validateDocumentExists(document);
 		
 		assertThrows(DocumentNotFoundException.class, ()->{
 			employeeServiceImp.deleteEmployeeByDocument(document);
@@ -319,5 +320,103 @@ public class EmployeeServiceImpTest {
 		verify(employeeRepository, never()).deleteByDocument(any());
 		
 		
-	}	
+	}
+
+	@Test
+	public void shouldUpdateEmployeeByDocumentWithSuccessfully() {
+		
+		String document = "11111111111";
+		
+	    Address address = new Address();
+	    address.setStreet("Rua A");
+	    address.setNumber(123L);
+	    address.setCity("Cidade X");
+	    address.setState("Estado Y");
+	    address.setZipCode("12345-678");
+	    address.setCountry("Brasil");
+	    
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    Employee entity = new Employee(null, "João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    Employee salvedEntity = new Employee(1L, "João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    EmployeeDto output = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    
+	    doNothing().when(employeeValidator).validateDocumentExists(document);
+	    when(employeeRepository.findByDocument(document)).thenReturn(entity);
+	    doNothing().when(employeeValidator).validateDocumentImmutable(document, inputDto.document());
+	    doNothing().when(employeeMapper).updateFromDto(inputDto, entity);
+	    when(employeeRepository.save(entity)).thenReturn(salvedEntity);
+	    when(employeeMapper.toDto(salvedEntity)).thenReturn(output);
+	    
+	    EmployeeDto result = employeeServiceImp.updateEmployeeByDocument(document, inputDto);
+	    
+	    assertNotNull(result);
+	    assertEquals(output, result);
+	    assertEquals("João Silva", result.name());
+	    assertEquals("11111111111", result.document());
+	    
+	    verify(employeeRepository).findByDocument(document);
+	    verify(employeeValidator).validateDocumentImmutable(document, inputDto.document());
+	    verify(employeeMapper).updateFromDto(inputDto, entity);
+	    verify(employeeRepository).save(entity);
+	    verify(employeeMapper).toDto(salvedEntity);
+	}
+	
+	@Test
+	public void shouldThrowException_whenDocumentDoesNotExist_onUpdate() {
+		
+		String document = "00000000000";
+		
+	    Address address = new Address();
+	    address.setStreet("Rua A");
+	    address.setNumber(123L);
+	    address.setCity("Cidade X");
+	    address.setState("Estado Y");
+	    address.setZipCode("12345-678");
+	    address.setCountry("Brasil");
+	    
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+
+	    doThrow(new DocumentNotFoundException()).when(employeeValidator).validateDocumentExists(document);
+	    
+	    assertThrows(DocumentNotFoundException.class, () -> {
+	    	employeeServiceImp.updateEmployeeByDocument(document, inputDto);
+	    });
+	    
+	    verify(employeeRepository, never()).findByDocument(any());
+	    verify(employeeMapper, never()).updateFromDto(any(), any());
+	    verify(employeeRepository, never()).save(any());
+		
+	}
+	
+	@Test
+	public void shouldThrowException_whenTryingToChangeDocument_onUpdate() {
+		
+		String originalDocument  = "11111111111";
+		String newDocument = "99999999999";
+		
+	    Address address = new Address();
+	    address.setStreet("Rua A");
+	    address.setNumber(123L);
+	    address.setCity("Cidade X");
+	    address.setState("Estado Y");
+	    address.setZipCode("12345-678");
+	    address.setCountry("Brasil");
+	    
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", newDocument, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    Employee entity = new Employee(1L, "João Silva", originalDocument, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+
+	    doNothing().when(employeeValidator).validateDocumentExists(originalDocument);
+	    when(employeeRepository.findByDocument(originalDocument)).thenReturn(entity);
+	    
+	    
+	    doThrow(new DocumentImmutableException()).when(employeeValidator).validateDocumentImmutable(originalDocument, newDocument);
+	    
+	    assertThrows(DocumentImmutableException.class, () -> {
+	    	employeeServiceImp.updateEmployeeByDocument(originalDocument, inputDto);
+	    });
+	    
+	    verify(employeeRepository).findByDocument(originalDocument);
+	    verify(employeeMapper, never()).updateFromDto(any(), any());
+	    verify(employeeRepository, never()).save(any());
+	}
 }
