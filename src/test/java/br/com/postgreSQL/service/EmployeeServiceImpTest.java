@@ -1,6 +1,5 @@
 package br.com.postgreSQL.service;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import br.com.postgreSQL.model.enums.EmployeeGender;
+import br.com.postgreSQL.dto.AddressDto;
 import br.com.postgreSQL.dto.EmployeeDto;
 import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
 import br.com.postgreSQL.exception.DocumentImmutableException;
@@ -57,11 +57,12 @@ public class EmployeeServiceImpTest {
 		address.setState("Estado Y");
 		address.setZipCode("12345-678");
 		address.setCountry("Brasil");
-
-		EmployeeDto inputDto = new EmployeeDto("João Silva", "12345678900", LocalDate.of(1990, 1, 1),EmployeeGender.HOMEM, address);
+		
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
+		EmployeeDto inputDto = new EmployeeDto("João Silva", "12345678900", LocalDate.of(1990, 1, 1),EmployeeGender.HOMEM, addressDto);
 		Employee entity = new Employee(1L, "João Silva", "12345678900", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
 		Employee savedEntity = new Employee(1L, "João Silva", "12345678900", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-		EmployeeDto outputDto = new EmployeeDto("João Silva", "12345678900", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+		EmployeeDto outputDto = new EmployeeDto("João Silva", "12345678900", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 
 		doNothing().when(employeeValidator).validateDocumentNotExists("12345678900");
 		when(employeeMapper.toEntity(inputDto)).thenReturn(entity);
@@ -82,17 +83,10 @@ public class EmployeeServiceImpTest {
 
 	@Test
 	public void shouldThrowException_whenDocumentAlreadyExists() {
-
-		Address address = new Address();
-		address.setStreet("Rua A");
-		address.setNumber(123L);
-		address.setCity("Cidade X");
-		address.setState("Estado Y");
-		address.setZipCode("12345-678");
-		address.setCountry("Brasil");
-
+		
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
 		EmployeeDto inputDto = new EmployeeDto("João Silva", "12345678900", LocalDate.of(1990, 1, 1),
-				EmployeeGender.HOMEM, address);
+				EmployeeGender.HOMEM, addressDto);
 
 		// Simula que o documento já existe no sistema, forçando a falha do fluxo.
 		doThrow(new DocumentAlreadyExistsException()).when(employeeValidator).validateDocumentNotExists("12345678900");
@@ -117,10 +111,11 @@ public class EmployeeServiceImpTest {
 		address.setState("Estado Y");
 		address.setZipCode("12345-678");
 		address.setCountry("Brasil");
-
+		
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
 		//Criando a lista de Dto para simular o recebimento dos dados.
-		EmployeeDto employeeDto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-		EmployeeDto employeeDto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, address);
+		EmployeeDto employeeDto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
+		EmployeeDto employeeDto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, addressDto);
 		List<EmployeeDto> inputList = List.of(employeeDto1, employeeDto2);
 
 		//Criando a lista de entity para simular a entrada e saida
@@ -134,8 +129,8 @@ public class EmployeeServiceImpTest {
 	    List<Employee> savedList = List.of(saved1, saved2);
 	    
 	    // DTOs de saída esperados
-	    EmployeeDto output1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-	    EmployeeDto output2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, address);
+	    EmployeeDto output1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
+	    EmployeeDto output2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, addressDto);
 	    List<EmployeeDto> expectedOutput = List.of(output1, output2);
 	    
 	    doNothing().when(employeeValidator).validateDocumentNotExists("11111111111");
@@ -162,16 +157,9 @@ public class EmployeeServiceImpTest {
 	@Test
 	public void shouldThrowException_whenAnyDocumentAlreadyExists() {
 		
-	    Address address = new Address();
-	    address.setStreet("Rua A");
-	    address.setNumber(123L);
-	    address.setCity("Cidade X");
-	    address.setState("Estado Y");
-	    address.setZipCode("12345-678");
-	    address.setCountry("Brasil");
-	    
-	    EmployeeDto employeeDto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-	    EmployeeDto employeeDto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, address);
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
+	    EmployeeDto employeeDto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
+	    EmployeeDto employeeDto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, addressDto);
 	    List<EmployeeDto> employeeList = List.of(employeeDto1, employeeDto2);
 	    
 	    doNothing().when(employeeValidator).validateDocumentNotExists("11111111111");
@@ -181,9 +169,7 @@ public class EmployeeServiceImpTest {
 	    	employeeServiceImp.createListEmployee(employeeList);
 	    });
 	    
-	    verify(employeeRepository, never()).saveAll(any());
-	    
-	    
+	    verify(employeeRepository, never()).saveAll(any());  
 	}
 	
 	
@@ -201,8 +187,9 @@ public class EmployeeServiceImpTest {
 	    address.setZipCode("12345-678");
 	    address.setCountry("Brasil");
 	    
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
 	    Employee employee = new Employee(1L, "João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-	    EmployeeDto expectedDto = new EmployeeDto("João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    EmployeeDto expectedDto = new EmployeeDto("João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 		
 		doNothing().when(employeeValidator).validateDocumentExists(document);
 		when(employeeRepository.findByDocument(document)).thenReturn(employee);
@@ -248,6 +235,7 @@ public class EmployeeServiceImpTest {
 	    address.setZipCode("12345-678");
 	    address.setCountry("Brasil");
 	    
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
 
 	    Employee employee1 = new Employee(1L, "João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
 	    Employee employee2 = new Employee(1L, "Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, address);
@@ -255,8 +243,8 @@ public class EmployeeServiceImpTest {
 	    List<Employee> employeeList = List.of(employee1, employee2);
 	    Page<Employee> employeePage = new PageImpl<>(employeeList);
 	    
-	    EmployeeDto dto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-	    EmployeeDto dto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, address);
+	    EmployeeDto dto1 = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
+	    EmployeeDto dto2 = new EmployeeDto("Maria Lima", "22222222222", LocalDate.of(1992, 2, 2), EmployeeGender.MULHER, addressDto);
 
 		when(employeeRepository.findAll(pageable)).thenReturn(employeePage);
 		when(employeeMapper.toDto(employee1)).thenReturn(dto1);
@@ -335,10 +323,12 @@ public class EmployeeServiceImpTest {
 	    address.setZipCode("12345-678");
 	    address.setCountry("Brasil");
 	    
-	    EmployeeDto inputDto = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
+	    
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 	    Employee entity = new Employee(null, "João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
 	    Employee salvedEntity = new Employee(1L, "João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
-	    EmployeeDto output = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+	    EmployeeDto output = new EmployeeDto("João Silva", "11111111111", LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 	    
 	    doNothing().when(employeeValidator).validateDocumentExists(document);
 	    when(employeeRepository.findByDocument(document)).thenReturn(entity);
@@ -365,16 +355,9 @@ public class EmployeeServiceImpTest {
 	public void shouldThrowException_whenDocumentDoesNotExist_onUpdate() {
 		
 		String document = "00000000000";
-		
-	    Address address = new Address();
-	    address.setStreet("Rua A");
-	    address.setNumber(123L);
-	    address.setCity("Cidade X");
-	    address.setState("Estado Y");
-	    address.setZipCode("12345-678");
-	    address.setCountry("Brasil");
 	    
-	    EmployeeDto inputDto = new EmployeeDto("João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", document, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 
 	    doThrow(new DocumentNotFoundException()).when(employeeValidator).validateDocumentExists(document);
 	    
@@ -402,7 +385,8 @@ public class EmployeeServiceImpTest {
 	    address.setZipCode("12345-678");
 	    address.setCountry("Brasil");
 	    
-	    EmployeeDto inputDto = new EmployeeDto("João Silva", newDocument, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
+    	AddressDto addressDto = new AddressDto("Rua A", 123L, "Teste", "itaparica", "Cidade X", "Estado Y", "12345-678", "Brasil");
+	    EmployeeDto inputDto = new EmployeeDto("João Silva", newDocument, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, addressDto);
 	    Employee entity = new Employee(1L, "João Silva", originalDocument, LocalDate.of(1990, 1, 1), EmployeeGender.HOMEM, address);
 
 	    doNothing().when(employeeValidator).validateDocumentExists(originalDocument);

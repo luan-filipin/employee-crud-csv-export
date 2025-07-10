@@ -38,7 +38,7 @@ public class EmployeeController {
 
 	// Create list employee.
 	@PostMapping("/employees")
-	public ResponseEntity<List<EmployeeDto>> createEmployees(@RequestBody @Valid List<EmployeeDto> listDto) {
+	public ResponseEntity<List<EmployeeDto>> createEmployees(@RequestBody @Valid List<@Valid EmployeeDto> listDto) {
 		List<EmployeeDto> employees = employeeService.createListEmployee(listDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(employees);
 	}
