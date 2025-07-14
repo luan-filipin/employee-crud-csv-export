@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.postgreSQL.dto.EmployeeDto;
+import br.com.postgreSQL.dto.EmployeeDtoListWrapper;
 import br.com.postgreSQL.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class EmployeeController {
 
 	// Create list employee.
 	@PostMapping("/employees")
-	public ResponseEntity<List<EmployeeDto>> createEmployees(@RequestBody @Valid List<@Valid EmployeeDto> listDto) {
-		List<EmployeeDto> employees = employeeService.createListEmployee(listDto);
+	public ResponseEntity<List<EmployeeDto>> createEmployees(@RequestBody @Valid EmployeeDtoListWrapper wrapper) {
+		List<EmployeeDto> employees = employeeService.createListEmployee(wrapper.getEmployees());
 		return ResponseEntity.status(HttpStatus.CREATED).body(employees);
 	}
 
