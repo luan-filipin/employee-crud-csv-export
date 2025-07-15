@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.postgreSQL.dto.EmployeeDto;
-import br.com.postgreSQL.dto.EmployeeDtoListWrapper;
-import br.com.postgreSQL.service.EmployeeService;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
+import br.com.postgreSQL.dto.employee.EmployeeDtoListWrapper;
+import br.com.postgreSQL.service.employee.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -52,7 +52,7 @@ public class EmployeeController {
 	}
 
 	// Find all employees.
-	@GetMapping("/employee")
+	@GetMapping("/employees")
 	public ResponseEntity<Page<EmployeeDto>> findAllEmployees(
 			@PageableDefault(page = 0, size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
 		return ResponseEntity.ok(employeeService.findAllEmployees(pageable));

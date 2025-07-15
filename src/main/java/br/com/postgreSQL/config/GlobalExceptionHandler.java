@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.postgreSQL.dto.response.ErrorResponseDto;
 import br.com.postgreSQL.dto.response.FieldErrorDto;
-import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
-import br.com.postgreSQL.exception.DocumentImmutableException;
-import br.com.postgreSQL.exception.DocumentNotFoundException;
+import br.com.postgreSQL.exception.employee.DocumentAlreadyExistsException;
+import br.com.postgreSQL.exception.employee.DocumentImmutableException;
+import br.com.postgreSQL.exception.employee.DocumentNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	/*@ExceptionHandler(RuntimeException.class)
+	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorResponseDto> handleGeneric(RuntimeException ex, HttpServletRequest request){
 		ErrorResponseDto error = new ErrorResponseDto(
 				ex.getMessage(),
 				HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-	}*/
+	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request){

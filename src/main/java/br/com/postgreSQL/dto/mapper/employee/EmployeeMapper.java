@@ -1,4 +1,4 @@
-package br.com.postgreSQL.mapper;
+package br.com.postgreSQL.dto.mapper.employee;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import br.com.postgreSQL.dto.EmployeeDto;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
 import br.com.postgreSQL.model.Employee;
 
 @Mapper(componentModel = "spring")

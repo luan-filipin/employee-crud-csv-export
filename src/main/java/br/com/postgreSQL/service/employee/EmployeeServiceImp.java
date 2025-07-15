@@ -1,4 +1,4 @@
-package br.com.postgreSQL.service;
+package br.com.postgreSQL.service.employee;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,11 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.postgreSQL.dto.EmployeeDto;
-import br.com.postgreSQL.mapper.EmployeeMapper;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
+import br.com.postgreSQL.dto.mapper.employee.EmployeeMapper;
 import br.com.postgreSQL.model.Employee;
 import br.com.postgreSQL.repository.EmployeeRepository;
-import br.com.postgreSQL.service.validator.EmployeeValidator;
+import br.com.postgreSQL.service.validator.employee.EmployeeValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 

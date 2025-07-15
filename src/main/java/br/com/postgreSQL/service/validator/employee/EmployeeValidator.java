@@ -1,10 +1,10 @@
-package br.com.postgreSQL.service.validator;
+package br.com.postgreSQL.service.validator.employee;
 
 import org.springframework.stereotype.Component;
 
-import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
-import br.com.postgreSQL.exception.DocumentImmutableException;
-import br.com.postgreSQL.exception.DocumentNotFoundException;
+import br.com.postgreSQL.exception.employee.DocumentAlreadyExistsException;
+import br.com.postgreSQL.exception.employee.DocumentImmutableException;
+import br.com.postgreSQL.exception.employee.DocumentNotFoundException;
 import br.com.postgreSQL.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 

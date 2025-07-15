@@ -1,4 +1,4 @@
-package br.com.postgreSQL.dto;
+package br.com.postgreSQL.dto.employee;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

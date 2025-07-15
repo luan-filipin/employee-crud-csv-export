@@ -1,4 +1,4 @@
-package br.com.postgreSQL.exception;
+package br.com.postgreSQL.exception.employee;
 
 public class DocumentImmutableException extends RuntimeException{
 	

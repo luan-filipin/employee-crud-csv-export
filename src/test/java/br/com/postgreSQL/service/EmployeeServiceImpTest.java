@@ -24,17 +24,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import br.com.postgreSQL.model.enums.EmployeeGender;
-import br.com.postgreSQL.dto.AddressDto;
-import br.com.postgreSQL.dto.EmployeeDto;
-import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
-import br.com.postgreSQL.exception.DocumentImmutableException;
-import br.com.postgreSQL.exception.DocumentNotFoundException;
-import br.com.postgreSQL.mapper.EmployeeMapper;
+import br.com.postgreSQL.dto.employee.AddressDto;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
+import br.com.postgreSQL.dto.mapper.employee.EmployeeMapper;
+import br.com.postgreSQL.exception.employee.DocumentAlreadyExistsException;
+import br.com.postgreSQL.exception.employee.DocumentImmutableException;
+import br.com.postgreSQL.exception.employee.DocumentNotFoundException;
 import br.com.postgreSQL.model.Address;
 import br.com.postgreSQL.model.Employee;
 import br.com.postgreSQL.repository.EmployeeRepository;
 import br.com.postgreSQL.service.employee.EmployeeServiceImp;
-import br.com.postgreSQL.service.employee.validator.EmployeeValidator;
+import br.com.postgreSQL.service.validator.employee.EmployeeValidator;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceImpTest {

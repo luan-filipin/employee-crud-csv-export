@@ -42,11 +42,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.postgreSQL.config.GlobalExceptionHandler;
-import br.com.postgreSQL.dto.AddressDto;
-import br.com.postgreSQL.dto.EmployeeDto;
-import br.com.postgreSQL.dto.EmployeeDtoListWrapper;
-import br.com.postgreSQL.exception.DocumentAlreadyExistsException;
-import br.com.postgreSQL.exception.DocumentNotFoundException;
+import br.com.postgreSQL.dto.employee.AddressDto;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
+import br.com.postgreSQL.dto.employee.EmployeeDtoListWrapper;
+import br.com.postgreSQL.exception.employee.DocumentAlreadyExistsException;
+import br.com.postgreSQL.exception.employee.DocumentNotFoundException;
 import br.com.postgreSQL.model.enums.EmployeeGender;
 import br.com.postgreSQL.service.employee.EmployeeServiceImp;
 

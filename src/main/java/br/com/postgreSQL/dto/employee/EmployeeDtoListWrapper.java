@@ -1,4 +1,4 @@
-package br.com.postgreSQL.dto;
+package br.com.postgreSQL.dto.employee;
 
 import java.util.List;
 

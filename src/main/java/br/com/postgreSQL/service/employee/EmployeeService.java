@@ -1,11 +1,11 @@
-package br.com.postgreSQL.service;
+package br.com.postgreSQL.service.employee;
 
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import br.com.postgreSQL.dto.EmployeeDto;
+import br.com.postgreSQL.dto.employee.EmployeeDto;
 
 public interface EmployeeService {
 
