@@ -33,7 +33,8 @@ import br.com.postgreSQL.mapper.EmployeeMapper;
 import br.com.postgreSQL.model.Address;
 import br.com.postgreSQL.model.Employee;
 import br.com.postgreSQL.repository.EmployeeRepository;
-import br.com.postgreSQL.service.validator.EmployeeValidator;
+import br.com.postgreSQL.service.employee.EmployeeServiceImp;
+import br.com.postgreSQL.service.employee.validator.EmployeeValidator;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceImpTest {
