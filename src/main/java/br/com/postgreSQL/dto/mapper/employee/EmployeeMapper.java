@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 import br.com.postgreSQL.dto.employee.EmployeeDto;
 import br.com.postgreSQL.model.Employee;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AddressMapper.class)
 public interface EmployeeMapper {
 	
 	EmployeeDto toDto(Employee employee);

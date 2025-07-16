@@ -17,5 +17,5 @@ public record EmployeeDto(
 		@NotNull(message = "O campo birthDate é obrigatório") LocalDate birthDate,
 		@Schema(description = "Genero", example = "HOMEM")
 		@NotNull(message = "O campo gender é obrigatorio") EmployeeGender employeeGender,
-		@Valid @NotNull(message = "O campo address é obrigatorio") AddressDto address) {
+		@NotNull(message = "O campo address é obrigatorio") AddressDto address) {
 }
