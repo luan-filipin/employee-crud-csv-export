@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-@Tag(name = "Rotas disponiveis", description = "Endpoints para criação, geração de token e busca de usuarios")
+@Tag(name = "Usuarios", description = "Endpoints para criação, geração de token e busca de usuarios")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api")

@@ -14,7 +14,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("Autenticação via OTP")
+                .title("Projeto de extração de dados.")
                 .description("Realiza a autenticação do usuario em um aplicativo (Authenticator)")
                 .version("1.0")
                 .contact(new Contact()
