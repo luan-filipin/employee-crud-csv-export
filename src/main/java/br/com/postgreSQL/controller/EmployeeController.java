@@ -1,12 +1,18 @@
 package br.com.postgreSQL.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.postgreSQL.dto.employee.EmployeeDto;
 import br.com.postgreSQL.dto.employee.EmployeeDtoListWrapper;
 import br.com.postgreSQL.service.employee.EmployeeService;
+import br.com.postgreSQL.service.employee.ExportEmployeesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeController {
 
 	private final EmployeeService employeeService;
+	private final ExportEmployeesService exportEmployeesService;
 
     @Operation(
             summary = "Cria um funcionario",
@@ -99,4 +108,17 @@ public class EmployeeController {
 		EmployeeDto updateEmployee = employeeService.updateEmployeeByDocument(document, employeeDto);
 		return ResponseEntity.ok().body(updateEmployee);
 	}
+    
+    @GetMapping("employees/export/csv")
+    public ResponseEntity<InputStreamResource> exportToCsv(){
+    	String csvContent = exportEmployeesService.exportEmployeesToCsv();
+    	
+    	ByteArrayInputStream inputSteam = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
+    	InputStreamResource file = new InputStreamResource(inputSteam);
+    	
+    	return ResponseEntity.ok()
+    	        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv")
+    	        .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
+    	        .body(file);
+    }
 }
