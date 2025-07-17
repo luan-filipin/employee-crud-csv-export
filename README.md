@@ -30,6 +30,8 @@ Este projeto foi desenvolvido como parte dos estudos de integração entre o **S
 - **Springdoc OpenAPI (Swagger UI)**
 - **JUnit 5 + Mockito + Spring Security Test**
 - **Maven**
+- **Docker**.
+
 
 ## 📚 Documentação da API
 
